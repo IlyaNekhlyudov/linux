@@ -1,0 +1,12 @@
+Дополнения гостевой ОС
+1. sudo apt-get update
+2. sudo apt-get install gcc make perl
+3. Запускаем повторно установку
+-----Профит-----
+
+SSH подключение
+1. sudo apt-get install openssh-server
+2. выставил виртуальный адаптер
+3. Порт 22 уже в исключениях ufw. Проверил командой sudo ufw app info 'OpenSSH'
+4. ssh-keygen - создание ssh ключа
+5. полученный публичный и приватный ключи через cat скопировал и запихнул в bitvise 
