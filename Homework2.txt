@@ -1,0 +1,45 @@
+======1 задание======
+ls /etc
+cat /etc/issue
+cat /etc/legal
+
+ls /proc
+ls /home
+
+======2 задание======
+nano one.txt
+nano two.txt
+cat one.txt two.txt > three.txt
+cat three.txt
+cp three.txt four.txt
+
+======3 задание======
+touch five.txt
+cat > six.txt
+nano seven.txt
+mkdir directory
+mv seven.txt directory/
+rm -r directory
+rm *.txt
+
+======4 задание======
+ls -ad .* | wc -l
+
+======5 задание======
+touch /tmp/success.txt
+touch error.txt
+cat /etc * 1> /tmp/success.txt 2> error.txt
+
+8 папок, файлы все удалось
+
+======6 задание======
+ps auxf
+ps auxf | grep gdm
+ps -a
+
+======7 задание======
+nano test.txt
+ps -a
+kill -15 1647
+
+На выходе - Received SIGHUP or SIGTERM
