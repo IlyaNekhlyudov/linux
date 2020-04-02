@@ -1,0 +1,38 @@
+======1 задание======
+cat > file1
+cp file1 file2
+ln -s file1 file3
+ln file1 file4
+ls -i
+rm file1
+ls -i
+файл file3 стал красным
+cat file3 не выводит
+cat file4 выводит
+
+======2 задание======
+mv file2 test2
+mv file3 test3
+mv file4 test4
+rm test3
+ln -s test2 test3
+mkdir test
+mv test3 test/test3
+cd test
+ls -i
+файл стал красным, через cat не открывается
+
+======3 задание======
+cd ~
+Удалил лишние файлы
+touch test1
+touch test2
+chmod ug+rw test1
+chmod o+r test1
+chmod ugo-rw test2
+chmod u+rw test2
+chmod 600 test2
+
+======4 задание======
+sudo adduser user
+sudo usermod -aG sudo user
