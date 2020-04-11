@@ -1,0 +1,70 @@
+======1 задание======
+#!/bin/bash
+
+usage () {
+  cat << eof
+This is a script that removes empty lines in a file and replaces letters with upper
+Usage $0 [file(s)]
+
+Examples:
+  $0 --help
+eof
+}
+
+while [[ $# -gt 0 ]] ; do
+  if [[ -e $1 ]] ; then
+        FILES+=( "$1" )
+        shift && continue
+  else
+        case $1 in
+                --help)
+                usage
+                exit 0
+        ;;
+        esac
+  fi
+done
+
+(( ${#FILES[@]} == 0 )) && echo "Files not specified." && exit 2
+
+sed -i '/^$/d' ${FILES[@]}
+cat ${FILES[@]} | tr '[:lower:]' '[:upper:]' >output.txt
+
+======2 задание======
+#!/bin/bash
+
+usage () {
+  cat << eof
+
+This script allows you to view changes in an auth.log.
+
+Usage $0
+
+Examples:
+  $0 --help
+
+eof
+}
+
+while [[ $# -gt 0 ]] ; do
+        case $1 in
+           --help)
+           usage
+           exit 0
+        ;;
+        esac
+done
+
+for ((;;))
+do
+  if [[ -e output.txt ]] ; then
+        diff /var/log/auth.log output.txt
+        cat /var/log/auth.log >output.txt
+  else
+        cat /var/log/auth.log >output.txt
+        echo "The program is running. We are waiting for the error."
+  fi
+  sleep 3
+done
+
+
