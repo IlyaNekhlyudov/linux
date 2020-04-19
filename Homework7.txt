@@ -1,0 +1,58 @@
+================1 задание================
+
+Легенда: 
+"_" - начало и конец содержимого файла
+
+mkdir -p ~/repos/django-docker
+cd ~/repos/django-docker
+touch dockerfile
+nano dockerfile
+_
+FROM python:3.6
+ENV PYTHONUNBUFFERED 1
+RUN mkdir /code
+WORKDIR /code
+ADD requirements.txt /code/
+RUN pip install -r requirements.txt
+ADD . /code/
+
+touch docker-compose.yml
+nano docker-compose.yml
+_
+version: '3.3'
+services:
+ db:
+   image: postgres
+ web:
+   build: .
+   command: python manage.py runserver 0.0.0.0:8000
+   volumes:
+     - .:/code
+   ports:
+     - "8000:8000"
+   depends_on:
+     - db
+_
+sudo docker build . -t django
+
+
+================2 задание================
+sudo docker-compose up -d
+sudo docker ps
+sudo docker exec -t -i b345f65a1057 bash
+python manage.py migrate
+
+
+================3 задание================
+sudo docker-compose up -d
+
+Итог:
+в браузере linux: http://ilya-ubuntu:8000
+у меня: http://192.168.56.101:8000
+
+================4 задание================
+sudo docker login --username ilyanekhlyudov
+sudo docker tag django:ilyanekhlyudov ilyanekhlyudov/django:version1
+sudo docker push ilyanekhlyudov/django:version1
+
+Итог: version1: digest: sha256:8b24e39468521de97fb28a1ccfba384ba9402c732ac3b055a46ced29b96899ac size: 3053
