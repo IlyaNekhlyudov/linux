@@ -1,0 +1,93 @@
+Легенда
+___
+___ - содержимое файла
+
+mkdir images
+cd images
+nano Dockerfile
+
+___
+FROM php:7.1-fpm
+
+RUN apt-get update && apt-get install -y \
+        curl \
+        wget \
+        git \
+        libfreetype6-dev \
+        libjpeg62-turbo-dev \
+        libmcrypt-dev \
+        libpng12-dev \
+    && docker-php-ext-install -j$(nproc) iconv mcrypt mbstring mysqli pdo_mysql zip \
+    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+    && docker-php-ext-install -j$(nproc) gd
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=com$
+
+ADD php.ini /usr/local/etc/php/conf.d/40-custom.ini
+
+WORKDIR /var/www
+
+CMD ["php-fpm"]
+___
+
+
+cd ~
+nano docker-compose.yml
+
+___
+version: '2'
+
+services:
+    nginx:
+        image: nginx:latest
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./hosts:/etc/nginx/conf.d
+            - ./www:/var/www
+            - ./logs:/var/log/nginx
+        links:
+            - php
+    php:
+        build: ./images
+        links:
+            - mysql
+        volumes:
+            - ./www:/var/www
+    mysql:
+        image: mysql:8
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./mysql:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: secret
+___
+
+sudo docker-compose up -d
+
+apt-get update && apt-get install -y curl wget git libfreetype6-dev libmcrypt-dev 
+&& docker-php-ext-install -j$(nproc) iconv mcrypt mbstring mysqli pdo_mysql zip 
+&& docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ 
+&& docker-php-ext-install -j$(nproc) gd
+
+sudo docker-compose up -d
+
+_________________
+Без докера
+_________________
+
+sudo apt update
+sudo apt install apache2
+sudo ufw allow in "Apache Full"
+sudo apt install mysql-server
+sudo mysql_secure_installation
+sudo apt install php libapache2-mod-php php-mysql
+sudo nano /etc/apache2/mods-enabled/dir.conf
+Переместил index.php в начало
+sudo systemctl restart apache2
+sudo apt install php-cli
+поменял название файла на index.php
+импортировал БД через
+mysql -u root -p password hospital_db < hospital_db.sql
